@@ -13,6 +13,7 @@ import { OwnersModule } from './owners/owners.module';
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
+      introspection: true,
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite', // type of database
