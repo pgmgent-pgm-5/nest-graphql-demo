@@ -14,7 +14,10 @@ export class PetsService {
   ) {}
 
   async createPet(createPetInput: CreatePetInput): Promise<Pet> {
-    const newPet = this.petRepository.create(createPetInput); // newPet = new Pet(); newPet.name = "test"
+    const newPet = this.petRepository.create({
+      ...createPetInput,
+      createdOn: new Date(),
+    }); // newPet = new Pet(); newPet.name = "test"
     return this.petRepository.save(newPet); // insert
   }
 

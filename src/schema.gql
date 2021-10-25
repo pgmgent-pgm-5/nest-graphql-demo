@@ -8,7 +8,13 @@ type Pet {
   type: String
   ownerId: Int!
   owner: Owner!
+  createdOn: Timestamp!
 }
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
 
 type Owner {
   id: Int!

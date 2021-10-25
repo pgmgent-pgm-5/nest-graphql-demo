@@ -24,4 +24,11 @@ export class Pet {
   @ManyToMany(() => Owner, (owner) => owner.pets)
   @Field((type) => Owner)
   owner: Owner;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  @Field()
+  createdOn: Date;
 }
