@@ -2,19 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Pet {
+type PetCategory {
   id: Int!
   name: String!
+}
+
+type Pet {
+  id: Int!
+  name: String
   type: String
   ownerId: Int!
   owner: Owner!
-  createdOn: Timestamp!
+  petCategories: [PetCategory!]!
+  createdOn: Date!
 }
 
-"""
-`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
+"""Date custom scalar type"""
+scalar Date
 
 type Owner {
   id: Int!
@@ -40,6 +44,11 @@ input CreatePetInput {
   name: String!
   type: String
   ownerId: Int!
+  petCategories: [PetCategoryInput!]!
+}
+
+input PetCategoryInput {
+  id: Int!
 }
 
 input CreateOwnerInput {

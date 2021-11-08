@@ -10,28 +10,29 @@ import {
 import { Owner } from 'src/owners/entities/owner.entity';
 import { CreatePetInput } from './dto/create-pet.input';
 import { Pet } from './pet.entity';
+import { PetCategory } from './petCategory.entity';
 import { PetsService } from './pets.service';
 
-@Resolver((of) => Pet)
+@Resolver(() => Pet)
 export class PetsResolver {
   constructor(private petService: PetsService) {}
 
-  @Query((returns) => Pet)
+  @Query(() => Pet)
   getPet(@Args('id', { type: () => Int }) id: number): Promise<Pet> {
     return this.petService.findOne(id);
   }
 
-  @Query((returns) => [Pet])
+  @Query(() => [Pet])
   pets(): Promise<Pet[]> {
     return this.petService.findAll();
   }
 
-  @ResolveField((returns) => Owner)
+  @ResolveField(() => Owner)
   owner(@Parent() pet: Pet): Promise<Owner> {
-    return this.petService.getOwner(pet.id);
+    return this.petService.getOwner(pet.ownerId);
   }
 
-  @Mutation((returns) => Pet)
+  @Mutation(() => Pet)
   createPet(
     @Args('createPetInput') createPetInput: CreatePetInput,
   ): Promise<Pet> {

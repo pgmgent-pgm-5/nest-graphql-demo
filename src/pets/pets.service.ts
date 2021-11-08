@@ -5,11 +5,14 @@ import { OwnersService } from 'src/owners/owners.service';
 import { Repository } from 'typeorm';
 import { CreatePetInput } from './dto/create-pet.input';
 import { Pet } from './pet.entity';
+import { PetCategory } from './petCategory.entity';
 
 @Injectable()
 export class PetsService {
   constructor(
     @InjectRepository(Pet) private petRepository: Repository<Pet>,
+    @InjectRepository(PetCategory)
+    private petCategoryRepository: Repository<PetCategory>,
     private ownerService: OwnersService,
   ) {}
 
@@ -27,6 +30,10 @@ export class PetsService {
     // pet.name = 'Mambo';
     // return [pet];
     return this.petRepository.find();
+  }
+
+  async findAllCategories(ids: number[]): Promise<PetCategory[]> {
+    return this.petCategoryRepository.findByIds(ids);
   }
 
   async findOne(id: number): Promise<Pet> {

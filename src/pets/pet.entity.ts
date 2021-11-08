@@ -1,16 +1,23 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Owner } from 'src/owners/entities/owner.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { PetCategory } from './petCategory.entity';
 
 @Entity()
 @ObjectType()
 export class Pet {
   @PrimaryGeneratedColumn()
-  @Field((type) => Int)
+  @Field(() => Int)
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   name: string;
 
   @Column({ nullable: true })
@@ -18,12 +25,36 @@ export class Pet {
   type?: string;
 
   @Column()
-  @Field((type) => Int)
+  @Field(() => Int)
   ownerId: number;
 
   @ManyToMany(() => Owner, (owner) => owner.pets)
-  @Field((type) => Owner)
+  @Field(() => Owner)
   owner: Owner;
+
+  @ManyToMany(
+    () => PetCategory,
+    (petCategory: PetCategory) => petCategory.pets,
+    { eager: true },
+  )
+  @Field(() => [PetCategory])
+  @JoinTable()
+  // We can define a JoinTable as seen below
+  // This way we can define the column names and table name
+  // otherwise TypeORM will choose for us.
+  //
+  // @JoinTable({
+  //   name: 'pet_petcategory', // table name for the junction table of this relation
+  //   joinColumn: {
+  //     name: 'pet_id',
+  //     referencedColumnName: 'id',
+  //   },
+  //   inverseJoinColumn: {
+  //     name: 'pet_category_id',
+  //     referencedColumnName: 'id',
+  //   },
+  // })
+  petCategories: PetCategory[];
 
   @Column({
     type: 'timestamp',
